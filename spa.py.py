@@ -11,4 +11,7 @@ stocks = ['MSFT','NVDA' ,'NTDOY' ,'AAPL']
 
 df = yf.download(stocks, start = startDate, end = endDate, auto_adjust=True)
 
-print (df.head())
+
+close_Prices = df['Close']
+
+print (close_Prices.head())
