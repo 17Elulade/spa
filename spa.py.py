@@ -7,7 +7,7 @@ import numpy as np
 endDate = dt.datetime.now()
 startDate = endDate - dt.timedelta(days = 365*5)
 
-stocks = ['MSFT','NVDA' ,'NTDOY' ,'QQQ']
+stocks = ['MSFT','NVDA' ,'NTDOY' ,'AAPL']
 
 df = yf.download(stocks, start = startDate, end = endDate, auto_adjust=True)
 
