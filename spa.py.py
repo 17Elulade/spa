@@ -9,6 +9,6 @@ startDate = endDate - dt.timedelta(days = 365*5)
 
 stocks = ['MSFT','NVDA' ,'NTDOY' ,'QQQ']
 
-df = yf.download(stocks, start = startDate, end = endDate)
+df = yf.download(stocks, start = startDate, end = endDate, auto_adjust=False)
 
 print (df.head())
