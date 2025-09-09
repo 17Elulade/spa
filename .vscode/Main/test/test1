@@ -39,7 +39,7 @@ chart_frame.pack(padx=20, pady=20)
 canvas_widget = None  # placeholder for the matplotlib canvas
 
 # Button to run analysis
-def analyze_stock():
+def analyse_stock():
     global canvas_widget
 
     selected = combo.get()
@@ -66,7 +66,7 @@ def analyze_stock():
     canvas_widget.draw()
     canvas_widget.get_tk_widget().pack()
 
-analyze_btn = tk.Button(frame, text="Analyze", command=analyze_stock)
-analyze_btn.grid(row=0, column=1, padx=10)
+analyse_btn = tk.Button(frame, text="Analyse", command=analyse_stock)
+analyse_btn.grid(row=0, column=1, padx=10)
 
 window.mainloop()
