@@ -1,9 +1,0 @@
-import tkinter
-
-
-window = tkinter.Tk()
-
-window.title("Stock Price Analyser")
-
-window.mainloop()
-

@@ -1,0 +1,72 @@
+import tkinter as tk
+from tkinter import ttk
+import yfinance as yf
+import datetime as dt
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+
+# === Backend function to fetch stock data ===
+def fetch_stock_data(ticker):
+    endDate = dt.datetime.now()
+    startDate = endDate - dt.timedelta(days=365*5)
+
+    df = yf.download(ticker, start=startDate, end=endDate, auto_adjust=True)
+
+    close_Prices = df['Close']
+    log_DReturns = np.log(close_Prices / close_Prices.shift(1))
+    log_CumuReturns = log_DReturns.cumsum()
+
+    return log_CumuReturns
+
+# Tkinter
+window = tk.Tk()
+window.title("Stock Price Analyser")
+
+frame = tk.Frame(window)
+frame.pack(padx=20, pady=20)
+
+# Dropdown with stocks
+stocks = ['MSFT - Microsoft', 'NVDA - NVIDIA', 'NTDOY - Nintendo', 'AAPL - Apple']
+combo = ttk.Combobox(frame, values=stocks, width=30)
+combo.set("Select a stock")
+combo.grid(row=0, column=0, padx=10, pady=10)
+
+# Frame for chart
+chart_frame = tk.Frame(window)
+chart_frame.pack(padx=20, pady=20)
+
+canvas_widget = None  # placeholder for the matplotlib canvas
+
+# Button to run analysis
+def analyze_stock():
+    global canvas_widget
+
+    selected = combo.get()
+    if " - " in selected:
+        ticker = selected.split(" - ")[0]  # Extract ticker only
+    else:
+        ticker = selected
+
+    # Fetch stock data
+    data = fetch_stock_data(ticker)
+
+    # Clear previous chart if it exists
+    for widget in chart_frame.winfo_children():
+        widget.destroy()
+
+    # Create new matplotlib figure
+    fig, ax = plt.subplots(figsize=(8, 5))
+    data.plot(ax=ax, title=f'{ticker} - Cumulative Returns')
+    ax.set_xlabel("Date")
+    ax.set_ylabel("Cumulative Log Returns")
+
+    # Embed figure in Tkinter
+    canvas_widget = FigureCanvasTkAgg(fig, master=chart_frame)
+    canvas_widget.draw()
+    canvas_widget.get_tk_widget().pack()
+
+analyze_btn = tk.Button(frame, text="Analyze", command=analyze_stock)
+analyze_btn.grid(row=0, column=1, padx=10)
+
+window.mainloop()
